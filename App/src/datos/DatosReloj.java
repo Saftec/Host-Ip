@@ -13,7 +13,7 @@ public class DatosReloj {
 	public ArrayList<Reloj> getRelojes()
 	{
 		ArrayList<Reloj> relojes = new ArrayList<Reloj>();
-		String consulta = "SELECT Machines.MachineAlias, Machines.MachineNumber FROM Machines;";
+		String consulta = "SELECT m.ID, m.MachineAlias FROM Machines m;";
 		conn = null;
 		Conexion con = new Conexion();
 		con.conectar();

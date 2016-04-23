@@ -1,6 +1,11 @@
 package interfaz;
 
 import java.awt.EventQueue;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.JComboBox;
@@ -122,10 +127,25 @@ public class Ventana {
 		JButton btnRefresh = new JButton("Refresh");
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String host;
+				String host="";
 				String ip;
 				Controlador controlador = new Controlador();
-				host=textUrl.getText();
+				
+				Properties prop = new Properties(); //INSTANCIO EL ARCHIVO DE PROPIEDADES
+				InputStream entrada=null;
+				
+				try
+				{
+					entrada = new FileInputStream("Configuracion.properties");
+					prop.load(entrada); //CARGO EL ARCHIVO DE CONFIGURACIONES
+					host=prop.getProperty("host");
+					entrada.close();
+				}
+				catch(IOException ex)
+				{
+					ex.printStackTrace();	
+				}
+				//host=textUrl.getText();
 				ip=controlador.actualizaDatos(host);
 				textHost.setText(ip);
 				if (textHost.getText().equals(textActual.getText())) {btnActualizar.setEnabled(false);} else
