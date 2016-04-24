@@ -23,10 +23,9 @@ import java.awt.event.MouseEvent; //PARA COMUNICARME CON EL CONTROLADOR
 public class Ventana {
 
 	private JFrame frame;
-	private JTextField textUrl;
 	private JTextField textActual;
 	private JTextField textHost;
-
+	private Controlador controlador = new Controlador(); //INSTANCION UN CONTROLADOR
 	/**
 	 * Launch the application.
 	 */
@@ -67,11 +66,9 @@ public class Ventana {
 		comboRelojes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//ESTO NO SE EJECUTA
-				Controlador controlador = new Controlador();
 				ArrayList<Reloj> relojes = new ArrayList<Reloj>();
 				Reloj reloj = new Reloj();
-				
+	
 				relojes=controlador.getRelojes();
 				for (int i = 0; i < relojes.size(); i++) 
 				{
@@ -88,14 +85,10 @@ public class Ventana {
 		comboRelojes.setBounds(148, 92, 143, 20);
 		frame.getContentPane().add(comboRelojes);
 		
-		textUrl = new JTextField();
-		textUrl.setBounds(143, 34, 270, 20);
-		frame.getContentPane().add(textUrl);
-		textUrl.setColumns(10);
-		
-		JLabel lblNewLabel = new JLabel("Direccion del Host:");
-		lblNewLabel.setBounds(23, 37, 110, 14);
-		frame.getContentPane().add(lblNewLabel);
+		JLabel lblHost = new JLabel("");
+		lblHost.setBounds(198, 11, 293, 20);
+		frame.getContentPane().add(lblHost);
+		lblHost.setText("Host: "+getHost());
 		
 		JLabel lblNewLabel_1 = new JLabel("Seleccione reloj");
 		lblNewLabel_1.setBounds(47, 95, 91, 14);
@@ -122,29 +115,15 @@ public class Ventana {
 		JButton btnActualizar = new JButton("Actualizar");
 		btnActualizar.setBounds(124, 266, 107, 38);
 		frame.getContentPane().add(btnActualizar);
+		btnActualizar.setEnabled(false); //BLOQUEO EL BOTÓN HASTA QUE SE CARGUEN LOS DATOS.
 		
 		
 		JButton btnRefresh = new JButton("Refresh");
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String host="";
+				String host;
 				String ip;
-				Controlador controlador = new Controlador();
-				
-				Properties prop = new Properties(); //INSTANCIO EL ARCHIVO DE PROPIEDADES
-				InputStream entrada=null;
-				
-				try
-				{
-					entrada = new FileInputStream("Configuracion.properties");
-					prop.load(entrada); //CARGO EL ARCHIVO DE CONFIGURACIONES
-					host=prop.getProperty("host");
-					entrada.close();
-				}
-				catch(IOException ex)
-				{
-					ex.printStackTrace();	
-				}
+				host=getHost();
 				//host=textUrl.getText();
 				ip=controlador.actualizaDatos(host);
 				textHost.setText(ip);
@@ -165,5 +144,26 @@ public class Ventana {
 		});
 		btnCancelar.setBounds(282, 266, 112, 38);
 		frame.getContentPane().add(btnCancelar);
+	}
+	
+	public String getHost()
+	{
+		Properties prop = new Properties(); //INSTANCIO EL ARCHIVO DE PROPIEDADES
+		InputStream entrada=null;
+		String host=" ";
+		
+		try
+		{
+			entrada = new FileInputStream("Configuracion.properties");
+			prop.load(entrada); //CARGO EL ARCHIVO DE CONFIGURACIONES
+			host=prop.getProperty("host");
+			entrada.close();
+			return host;
+		}
+		catch(IOException ex)
+		{
+			ex.printStackTrace();
+			return host;
+		}
 	}
 }

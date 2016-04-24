@@ -13,7 +13,7 @@ public class DatosReloj {
 	public ArrayList<Reloj> getRelojes()
 	{
 		ArrayList<Reloj> relojes = new ArrayList<Reloj>();
-		String consulta = "SELECT m.ID, m.MachineAlias FROM Machines m;";
+		String consulta = "SELECT * FROM Machines;";
 		conn = null;
 		Conexion con = new Conexion();
 		con.conectar();
@@ -22,13 +22,13 @@ public class DatosReloj {
 		
 		try
 		{
-			PreparedStatement st = conn.prepareStatement( consulta );
+			PreparedStatement st = conn.prepareStatement(consulta);
 			ResultSet rs = st.executeQuery();
 			while(rs.next())
 			{
 				Reloj reloj = new Reloj();
-				reloj.setNombre(rs.getString("MachineAlias"));
-				reloj.setNumero(rs.getString("MachineNumber"));
+				//reloj.setNombre(rs.getString("MachineAlias"));
+				//reloj.setNumero(rs.getString("MachineNumber"));
 				relojes.add(reloj);
 			}	
 		}

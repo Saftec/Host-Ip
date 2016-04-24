@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 
 public class Conexion {
 	
-	private Connection con;
+	private Connection con = null;
 
     public boolean conectar()
     {
@@ -14,6 +14,7 @@ public class Conexion {
             // CONEXION
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
             con = DriverManager.getConnection("jdbc:ucanaccess://C:/Program Files/ZKTime5.0/miBase.mdb");
+            if(con==null) {System.out.println("es nulo");}
             return true;
         }
         catch (Exception ex)
