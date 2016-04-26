@@ -1,14 +1,8 @@
 package interfaz;
 
 import java.awt.EventQueue;
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 import javax.swing.JFrame;
-//import javax.swing.JOption;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -20,6 +14,7 @@ import java.util.ArrayList;
 
 import entidades.Reloj;
 import negocio.Controlador;
+import negocio.ControladorConfiguraciones;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent; //PARA COMUNICARME CON EL CONTROLADOR
 public class Ventana {
@@ -28,6 +23,7 @@ public class Ventana {
 	private JTextField textActual;
 	private JTextField textHost;
 	private Controlador controlador = new Controlador(); //INSTANCION UN CONTROLADOR
+	private ControladorConfiguraciones controladorCfg = new ControladorConfiguraciones();
 	private JTextField textUrlHost;
 	private JTextField textUrlBD;
 	/**
@@ -121,8 +117,7 @@ public class Ventana {
 			public void actionPerformed(ActionEvent arg0) {
 				String host;
 				String ip;
-				host=getConfiguracion("UrlHost");
-				//host=textUrl.getText();
+				host=controladorCfg.getConfiguracion("urlHost");
 				ip=controlador.actualizaDatos(host);
 				textHost.setText(ip);
 				if (textHost.getText().equals(textActual.getText())) {btnActualizar.setEnabled(false);} else
@@ -148,14 +143,14 @@ public class Ventana {
 		frame.getContentPane().add(textUrlHost);
 		textUrlHost.setColumns(10);
 		textUrlHost.setEditable(false);
-		textUrlHost.setText(getConfiguracion("UrlHost"));
+		textUrlHost.setText(controladorCfg.getConfiguracion("urlHost"));
 		
 		textUrlBD = new JTextField();
 		textUrlBD.setBounds(108, 22, 276, 20);
 		frame.getContentPane().add(textUrlBD);
 		textUrlBD.setColumns(10);
 		textUrlBD.setEditable(false);
-		textUrlBD.setText(getConfiguracion("UrlBD"));
+		textUrlBD.setText(controladorCfg.getConfiguracion("urlBD"));
 		
 		JButton btnEditarBD = new JButton("Editar");
 		btnEditarBD.addActionListener(new ActionListener() {
@@ -164,7 +159,7 @@ public class Ventana {
 				boolean res=false;
 				host=click(btnEditarBD, textUrlBD);
 				textUrlBD.setText(host);
-				res=setConfiguracion("urlBD",textUrlBD.getText());
+				res=controladorCfg.setConfiguracion("urlBD",textUrlBD.getText());
 				if (btnEditarBD.getText().equals("Editar")){
 				if (res==true) {JOptionPane.showMessageDialog(null, "Cambios guardados"); }
 				else {JOptionPane.showMessageDialog(null, "Error al guardar los cambios"); }
@@ -181,7 +176,7 @@ public class Ventana {
 				boolean res=false;
 				url=click(btnEditarHost, textUrlHost);
 				textUrlHost.setText(url);
-				res=setConfiguracion("urlHost",textUrlHost.getText());
+				res=controladorCfg.setConfiguracion("urlHost",textUrlHost.getText());
 				if (btnEditarHost.getText().equals("Editar")){
 				if (res==true) {JOptionPane.showMessageDialog(null, "Cambios guardados"); }
 				else {JOptionPane.showMessageDialog(null, "Error al guardar los cambios"); }
@@ -191,28 +186,17 @@ public class Ventana {
 		});
 		btnEditarHost.setBounds(394, 65, 89, 23);
 		frame.getContentPane().add(btnEditarHost);
+		
+		JLabel lblUrlBaseDe = new JLabel("Url BD:");
+		lblUrlBaseDe.setBounds(47, 25, 51, 14);
+		frame.getContentPane().add(lblUrlBaseDe);
+		
+		JLabel lblNewLabel = new JLabel("Url de Host:");
+		lblNewLabel.setBounds(31, 69, 67, 14);
+		frame.getContentPane().add(lblNewLabel);
 	}
 	
-	public String getConfiguracion(String configuracion)
-	{
-		Properties prop = new Properties(); //INSTANCIO EL ARCHIVO DE PROPIEDADES
-		InputStream entrada=null;
-		String valor="<vacío>";
-		
-		try
-		{
-			entrada = new FileInputStream("Configuracion.properties");
-			prop.load(entrada); //CARGO EL ARCHIVO DE CONFIGURACIONES
-			valor=prop.getProperty(configuracion);
-			entrada.close();
-			return valor;
-		}
-		catch(IOException ex)
-		{
-			ex.printStackTrace();
-			return valor;
-		}
-	}
+
 	
 	private String click(JButton btn, JTextField text)
 	{
@@ -226,26 +210,5 @@ public class Ventana {
 			btn.setText("Editar");
 			return(text.getText());
 		}
-	}
-	
-	private boolean setConfiguracion(String propiedad, String nuevaConfig)
-	{
-		Properties prop = new Properties();
-		InputStream entrada=null;
-		
-		try
-		{
-			entrada = new FileInputStream("Configuracion.properties");
-			prop.load(entrada);
-			prop.setProperty(propiedad, nuevaConfig);
-			entrada.close();
-			return true;
-		}
-		
-		catch(IOException ex)
-		{
-			ex.printStackTrace();
-			return false;
-		}	
 	}
 }

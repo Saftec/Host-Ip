@@ -7,28 +7,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class DatosReloj {
-	
-	private Connection conn;
 
 	public ArrayList<Reloj> getRelojes()
 	{
 		ArrayList<Reloj> relojes = new ArrayList<Reloj>();
-		String consulta = "SELECT * FROM Machines;";
-		conn = null;
+		String consulta = "SELECT * FROM Machines";
 		Conexion con = new Conexion();
-		con.conectar();
 		
 		//REALIZO LA CONSULTA
 		
 		try
 		{
-			PreparedStatement st = conn.prepareStatement(consulta);
+			con.conectar();
+			PreparedStatement st = con.getConexion().prepareStatement(consulta);
 			ResultSet rs = st.executeQuery();
 			while(rs.next())
 			{
 				Reloj reloj = new Reloj();
-				//reloj.setNombre(rs.getString("MachineAlias"));
-				//reloj.setNumero(rs.getString("MachineNumber"));
+				reloj.setNombre(rs.getString("MachineAlias"));
+				reloj.setNumero(rs.getString("MachineNumber"));
 				relojes.add(reloj);
 			}	
 		}

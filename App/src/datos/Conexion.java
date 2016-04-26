@@ -3,17 +3,19 @@ package datos;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import negocio.ControladorConfiguraciones;
+
 public class Conexion {
 	
 	private Connection con = null;
 
     public boolean conectar()
-    {
+    { ControladorConfiguraciones controladorCfg = new ControladorConfiguraciones();
         try
         {
             // CONEXION
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-            con = DriverManager.getConnection("jdbc:ucanaccess://C:/Program Files/ZKTime5.0/miBase.mdb");
+            con = DriverManager.getConnection("jdbc:ucanaccess://"+controladorCfg.getConfiguracion("urlBD"));
             if(con==null) {System.out.println("es nulo");}
             return true;
         }
@@ -23,6 +25,10 @@ public class Conexion {
             ex.printStackTrace();
             return false;
         }
+    }
+    public Connection getConexion()
+    {
+    	return con;
     }
 
 }
