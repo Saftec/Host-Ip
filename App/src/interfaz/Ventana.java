@@ -2,6 +2,7 @@ package interfaz;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -61,7 +62,7 @@ public class Ventana {
 		frame.setLocationRelativeTo(null);	
 		
 		
-		JComboBox<String> comboRelojes = new JComboBox<String>();
+		JComboBox<Reloj> comboRelojes = new JComboBox<Reloj>();
 		comboRelojes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -72,7 +73,7 @@ public class Ventana {
 				for (int i = 0; i < relojes.size(); i++) 
 				{
 					reloj = relojes.get(i);
-					comboRelojes.addItem(reloj.getNumero()+" "+reloj.getNombre());
+					comboRelojes.addItem(reloj);
 				}
 			}
 		});
