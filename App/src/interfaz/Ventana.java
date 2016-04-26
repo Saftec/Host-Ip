@@ -8,9 +8,11 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import javax.swing.JFrame;
+//import javax.swing.JOption;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -26,6 +28,8 @@ public class Ventana {
 	private JTextField textActual;
 	private JTextField textHost;
 	private Controlador controlador = new Controlador(); //INSTANCION UN CONTROLADOR
+	private JTextField textUrlHost;
+	private JTextField textUrlBD;
 	/**
 	 * Launch the application.
 	 */
@@ -47,6 +51,7 @@ public class Ventana {
 	 */
 	public Ventana() {
 		initialize();
+		
 	}
 
 	/**
@@ -57,9 +62,7 @@ public class Ventana {
 		frame.setBounds(100, 100, 581, 371);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		frame.setLocationRelativeTo(null);
-		
-		
+		frame.setLocationRelativeTo(null);	
 		
 		
 		JComboBox<String> comboRelojes = new JComboBox<String>();
@@ -82,16 +85,11 @@ public class Ventana {
 		
 		
 		
-		comboRelojes.setBounds(148, 92, 143, 20);
+		comboRelojes.setBounds(156, 115, 143, 20);
 		frame.getContentPane().add(comboRelojes);
 		
-		JLabel lblHost = new JLabel("");
-		lblHost.setBounds(198, 11, 293, 20);
-		frame.getContentPane().add(lblHost);
-		lblHost.setText("Host: "+getHost());
-		
 		JLabel lblNewLabel_1 = new JLabel("Seleccione reloj");
-		lblNewLabel_1.setBounds(47, 95, 91, 14);
+		lblNewLabel_1.setBounds(23, 118, 91, 14);
 		frame.getContentPane().add(lblNewLabel_1);
 		
 		textActual = new JTextField();
@@ -123,7 +121,7 @@ public class Ventana {
 			public void actionPerformed(ActionEvent arg0) {
 				String host;
 				String ip;
-				host=getHost();
+				host=getConfiguracion("UrlHost");
 				//host=textUrl.getText();
 				ip=controlador.actualizaDatos(host);
 				textHost.setText(ip);
@@ -133,7 +131,7 @@ public class Ventana {
 		
 			}
 		});
-		btnRefresh.setBounds(348, 91, 89, 23);
+		btnRefresh.setBounds(348, 111, 89, 23);
 		frame.getContentPane().add(btnRefresh);
 		
 		JButton btnCancelar = new JButton("Cancelar");
@@ -144,26 +142,110 @@ public class Ventana {
 		});
 		btnCancelar.setBounds(282, 266, 112, 38);
 		frame.getContentPane().add(btnCancelar);
+		
+		textUrlHost = new JTextField();
+		textUrlHost.setBounds(108, 66, 276, 20);
+		frame.getContentPane().add(textUrlHost);
+		textUrlHost.setColumns(10);
+		textUrlHost.setEditable(false);
+		textUrlHost.setText(getConfiguracion("UrlHost"));
+		
+		textUrlBD = new JTextField();
+		textUrlBD.setBounds(108, 22, 276, 20);
+		frame.getContentPane().add(textUrlBD);
+		textUrlBD.setColumns(10);
+		textUrlBD.setEditable(false);
+		textUrlBD.setText(getConfiguracion("UrlBD"));
+		
+		JButton btnEditarBD = new JButton("Editar");
+		btnEditarBD.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String host;
+				boolean res=false;
+				host=click(btnEditarBD, textUrlBD);
+				textUrlBD.setText(host);
+				res=setConfiguracion("urlBD",textUrlBD.getText());
+				if (btnEditarBD.getText().equals("Editar")){
+				if (res==true) {JOptionPane.showMessageDialog(null, "Cambios guardados"); }
+				else {JOptionPane.showMessageDialog(null, "Error al guardar los cambios"); }
+				}
+			}
+		});
+		btnEditarBD.setBounds(394, 21, 89, 23);
+		frame.getContentPane().add(btnEditarBD);
+		
+		JButton btnEditarHost = new JButton("Editar");
+		btnEditarHost.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String url;
+				boolean res=false;
+				url=click(btnEditarHost, textUrlHost);
+				textUrlHost.setText(url);
+				res=setConfiguracion("urlHost",textUrlHost.getText());
+				if (btnEditarHost.getText().equals("Editar")){
+				if (res==true) {JOptionPane.showMessageDialog(null, "Cambios guardados"); }
+				else {JOptionPane.showMessageDialog(null, "Error al guardar los cambios"); }
+				}
+				
+			}
+		});
+		btnEditarHost.setBounds(394, 65, 89, 23);
+		frame.getContentPane().add(btnEditarHost);
 	}
 	
-	public String getHost()
+	public String getConfiguracion(String configuracion)
 	{
 		Properties prop = new Properties(); //INSTANCIO EL ARCHIVO DE PROPIEDADES
 		InputStream entrada=null;
-		String host=" ";
+		String valor="<vacío>";
 		
 		try
 		{
 			entrada = new FileInputStream("Configuracion.properties");
 			prop.load(entrada); //CARGO EL ARCHIVO DE CONFIGURACIONES
-			host=prop.getProperty("host");
+			valor=prop.getProperty(configuracion);
 			entrada.close();
-			return host;
+			return valor;
 		}
 		catch(IOException ex)
 		{
 			ex.printStackTrace();
-			return host;
+			return valor;
 		}
+	}
+	
+	private String click(JButton btn, JTextField text)
+	{
+		if (btn.getText().equals("Editar")) {
+			text.setEditable(true);
+			btn.setText("Guardar");
+			return(text.getText());
+		}
+		else {
+			text.setEditable(false);
+			btn.setText("Editar");
+			return(text.getText());
+		}
+	}
+	
+	private boolean setConfiguracion(String propiedad, String nuevaConfig)
+	{
+		Properties prop = new Properties();
+		InputStream entrada=null;
+		
+		try
+		{
+			entrada = new FileInputStream("Configuracion.properties");
+			prop.load(entrada);
+			prop.setProperty(propiedad, nuevaConfig);
+			entrada.close();
+			return true;
+		}
+		
+		catch(IOException ex)
+		{
+			ex.printStackTrace();
+			return false;
+		}	
 	}
 }
