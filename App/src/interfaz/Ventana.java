@@ -66,15 +66,7 @@ public class Ventana {
 		comboRelojes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				ArrayList<Reloj> relojes = new ArrayList<Reloj>();
-				Reloj reloj = new Reloj();
-	
-				relojes=controlador.getRelojes();
-				for (int i = 0; i < relojes.size(); i++) 
-				{
-					reloj = relojes.get(i);
-					comboRelojes.addItem(reloj);
-				}
+				
 			}
 		});
 		
@@ -85,14 +77,18 @@ public class Ventana {
 		comboRelojes.setBounds(156, 115, 143, 20);
 		frame.getContentPane().add(comboRelojes);
 		
-		JLabel lblNewLabel_1 = new JLabel("Seleccione reloj");
-		lblNewLabel_1.setBounds(23, 118, 91, 14);
+		inicializarCB(comboRelojes);
+		
+		JLabel lblNewLabel_1 = new JLabel("Seleccione un Reloj:");
+		lblNewLabel_1.setBounds(10, 118, 136, 14);
 		frame.getContentPane().add(lblNewLabel_1);
 		
 		textActual = new JTextField();
 		textActual.setBounds(108, 155, 143, 20);
 		frame.getContentPane().add(textActual);
 		textActual.setColumns(10);
+		textActual.setText("");
+		
 		
 		JLabel lblNewLabel_2 = new JLabel("IP Actual:");
 		lblNewLabel_2.setBounds(47, 158, 67, 14);
@@ -102,6 +98,7 @@ public class Ventana {
 		textHost.setBounds(348, 155, 143, 20);
 		frame.getContentPane().add(textHost);
 		textHost.setColumns(10);
+		
 		
 		JLabel lblNewLabel_3 = new JLabel("Ip Host:");
 		lblNewLabel_3.setBounds(292, 158, 46, 14);
@@ -118,9 +115,11 @@ public class Ventana {
 			public void actionPerformed(ActionEvent arg0) {
 				String host;
 				String ip;
+				Reloj reloj = new Reloj();
 				host=controladorCfg.getConfiguracion("urlHost");
 				ip=controlador.actualizaDatos(host);
 				textHost.setText(ip);
+				textActual.setText(actualizaIp(comboRelojes));
 				if (textHost.getText().equals(textActual.getText())) {btnActualizar.setEnabled(false);} else
 				{btnActualizar.setEnabled(true);}
 				
@@ -210,6 +209,29 @@ public class Ventana {
 			text.setEditable(false);
 			btn.setText("Editar");
 			return(text.getText());
+		}
+	}
+	
+	private String actualizaIp(JComboBox<Reloj> comboRelojes)
+	{
+		Reloj reloj= new Reloj();
+		if(comboRelojes.getSelectedItem()==null){return("");}
+		else{
+		reloj=(Reloj)comboRelojes.getSelectedItem();
+		return(reloj.getIp());
+		}
+	}
+	
+	private void inicializarCB(JComboBox<Reloj> comboRelojes)
+	{
+		ArrayList<Reloj> relojes = new ArrayList<Reloj>();
+		Reloj reloj = new Reloj();
+
+		relojes=controlador.getRelojes();
+		for (int i = 0; i < relojes.size(); i++) 
+		{
+			reloj = relojes.get(i);
+			comboRelojes.addItem(reloj);
 		}
 	}
 }
