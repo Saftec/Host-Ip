@@ -36,5 +36,27 @@ public class DatosReloj {
 		}
 		return(relojes);	
 	}
+	
+	public int setNewIp(String ipAnt, String ipNueva)
+	{
+		int m= 0;
+		String sentencia = "UPDATE Machines SET IP="+ipNueva+" WHERE IP="+ipAnt;;
+		Conexion con = new Conexion();
+		
+		//REALIZO LA ACTUALIZACIÓN
+		
+		try
+		{
+			con.conectar();
+			PreparedStatement st = con.getConexion().prepareStatement(sentencia);
+			m = st.executeUpdate();
+		}
+		catch(Exception ex)
+		{
+			System.out.println(ex.getMessage());
+		}
+		
+		return(m);	
+	}
 
 }

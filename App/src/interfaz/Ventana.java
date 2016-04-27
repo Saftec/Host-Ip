@@ -105,6 +105,14 @@ public class Ventana {
 		frame.getContentPane().add(lblNewLabel_3);
 		
 		JButton btnActualizar = new JButton("Actualizar");
+		btnActualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				boolean resp;
+				resp=controlador.actualizaIp(textActual.getText(), textHost.getText());
+				if (resp==true) {JOptionPane.showMessageDialog(null, "Se actualizó la IP correctamente"); }
+				else {JOptionPane.showMessageDialog(null, "Error al realizar la actualización"); } 
+			}
+		});
 		btnActualizar.setBounds(124, 266, 107, 38);
 		frame.getContentPane().add(btnActualizar);
 		btnActualizar.setEnabled(false); //BLOQUEO EL BOTÓN HASTA QUE SE CARGUEN LOS DATOS.
@@ -115,7 +123,6 @@ public class Ventana {
 			public void actionPerformed(ActionEvent arg0) {
 				String host;
 				String ip;
-				Reloj reloj = new Reloj();
 				host=controladorCfg.getConfiguracion("urlHost");
 				ip=controlador.actualizaDatos(host);
 				textHost.setText(ip);
@@ -180,6 +187,8 @@ public class Ventana {
 				if (btnEditarHost.getText().equals("Editar")){
 				if (res==true) {JOptionPane.showMessageDialog(null, "Cambios guardados"); }
 				else {JOptionPane.showMessageDialog(null, "Error al guardar los cambios"); }
+				Ventana v = new Ventana();
+				v.initialize();
 				}
 				
 			}

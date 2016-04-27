@@ -37,4 +37,13 @@ public class Controlador {
 		return (todosRelojes);
 	}
 	
+	public boolean actualizaIp(String ipAnt, String ipNueva)
+	{	boolean resp=false;
+		int n=0;
+		DatosReloj datosReloj = new DatosReloj();
+		n=datosReloj.setNewIp(ipAnt, ipNueva);
+		if(n==1) {resp=true;}
+		return(resp);
+	}
+	
 }
