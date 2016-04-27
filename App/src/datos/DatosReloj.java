@@ -40,7 +40,7 @@ public class DatosReloj {
 	public int setNewIp(String ipAnt, String ipNueva)
 	{
 		int m= 0;
-		String sentencia = "UPDATE Machines SET IP="+ipNueva+" WHERE IP="+ipAnt;;
+		String sentencia = "UPDATE Machines SET IP='"+ipNueva+"' WHERE IP='"+ipAnt+"'";
 		Conexion con = new Conexion();
 		
 		//REALIZO LA ACTUALIZACIÓN
