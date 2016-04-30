@@ -12,7 +12,7 @@ public class ControladorConfiguraciones {
 	{
 		Properties prop = new Properties(); //INSTANCIO EL ARCHIVO DE PROPIEDADES
 		InputStream entrada=null;
-		String valor="<vacío>";
+		String valor="<vacï¿½o>";
 		
 		try
 		{

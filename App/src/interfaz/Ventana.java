@@ -109,13 +109,13 @@ public class Ventana {
 			public void actionPerformed(ActionEvent arg0) {
 				boolean resp;
 				resp=controlador.actualizaIp(textActual.getText(), textHost.getText());
-				if (resp==true) {JOptionPane.showMessageDialog(null, "Se actualizó la IP correctamente"); }
-				else {JOptionPane.showMessageDialog(null, "Error al realizar la actualización"); } 
+				if (resp==true) {JOptionPane.showMessageDialog(null, "Se actualizï¿½ la IP correctamente"); }
+				else {JOptionPane.showMessageDialog(null, "Error al realizar la actualizaciï¿½n"); } 
 			}
 		});
 		btnActualizar.setBounds(124, 266, 107, 38);
 		frame.getContentPane().add(btnActualizar);
-		btnActualizar.setEnabled(false); //BLOQUEO EL BOTÓN HASTA QUE SE CARGUEN LOS DATOS.
+		btnActualizar.setEnabled(false); //BLOQUEO EL BOTï¿½N HASTA QUE SE CARGUEN LOS DATOS.
 		
 		
 		JButton btnRefresh = new JButton("Refresh");
@@ -168,7 +168,9 @@ public class Ventana {
 				textUrlBD.setText(host);
 				res=controladorCfg.setConfiguracion("urlBD",textUrlBD.getText());
 				if (btnEditarBD.getText().equals("Editar")){
-				if (res==true) {JOptionPane.showMessageDialog(null, "Cambios guardados"); }
+				if (res==true) {JOptionPane.showMessageDialog(null, "Cambios guardados. Se reiniciarÃ¡ la herramienta"); 
+				frame.dispose();				
+				Ventana.main(null);}
 				else {JOptionPane.showMessageDialog(null, "Error al guardar los cambios"); }
 				}
 			}

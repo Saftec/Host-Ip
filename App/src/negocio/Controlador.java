@@ -33,7 +33,8 @@ public class Controlador {
 	public ArrayList<Reloj> getRelojes()
 	{   ArrayList<Reloj> todosRelojes = new ArrayList<Reloj>();
 		DatosReloj reloj = new DatosReloj();
-		todosRelojes=reloj.getRelojes();
+		String consulta = "SELECT * FROM Machines";
+		todosRelojes=reloj.getRelojes(consulta);
 		return (todosRelojes);
 	}
 	

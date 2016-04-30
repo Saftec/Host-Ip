@@ -2,6 +2,7 @@ package datos;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import negocio.ControladorConfiguraciones;
 
@@ -16,12 +17,11 @@ public class Conexion {
             // CONEXION
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
             con = DriverManager.getConnection("jdbc:ucanaccess://"+controladorCfg.getConfiguracion("urlBD"));
-            if(con==null) {System.out.println("es nulo");}
             return true;
         }
         catch (Exception ex)
         {
-            System.out.println("Error en la conexión a la base de datos: "+ex.getMessage());
+            System.out.println("Error en la conexiï¿½n a la base de datos: "+ex.getMessage());
             ex.printStackTrace();
             return false;
         }
@@ -30,5 +30,15 @@ public class Conexion {
     {
     	return con;
     }
-
+    
+    public void desconectar()
+    {
+    	try{
+    		con.close();
+    	}
+    	catch(SQLException ex)
+    	{
+    		ex.getMessage();
+    	}
+    }
 }
