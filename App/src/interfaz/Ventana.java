@@ -60,6 +60,7 @@ public class Ventana {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setLocationRelativeTo(null);	
+		frame.setTitle("Herramienta para actualizar IP");
 		
 		
 		JComboBox<Reloj> comboRelojes = new JComboBox<Reloj>();
@@ -109,8 +110,17 @@ public class Ventana {
 			public void actionPerformed(ActionEvent arg0) {
 				boolean resp;
 				resp=controlador.actualizaIp(textActual.getText(), textHost.getText());
+<<<<<<< HEAD
+				if (resp==true) {JOptionPane.showMessageDialog(null, "Se actualizó la IP correctamente");
+				comboRelojes.removeAllItems();
+				inicializarCB(comboRelojes);
+				textActual.setText(actualizaIp(comboRelojes));
+				btnActualizar.setEnabled(false);}
+				else {JOptionPane.showMessageDialog(null, "Error al realizar la actualización"); } 
+=======
 				if (resp==true) {JOptionPane.showMessageDialog(null, "Se actualiz� la IP correctamente"); }
 				else {JOptionPane.showMessageDialog(null, "Error al realizar la actualizaci�n"); } 
+>>>>>>> branch 'master' of https://github.com/lazaro94/Host-Ip
 			}
 		});
 		btnActualizar.setBounds(124, 266, 107, 38);
